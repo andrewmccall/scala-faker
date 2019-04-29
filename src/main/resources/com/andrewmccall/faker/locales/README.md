@@ -1,3 +1,5 @@
+These yaml files came from the ruby faker library.
+
 # How Locales Work
 
 The default locale is English. You can see how it is implemented in the "translate" method in [Faker.rb](/lib/faker.rb).

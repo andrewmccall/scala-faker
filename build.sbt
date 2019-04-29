@@ -1,5 +1,5 @@
-lazy val root = (project in file("."))
-  .settings(
-    name := "scala-faker",
-    scalaVersion := "2.12.7"
-  )
+name := "scala-faker"
+crossScalaVersions := Seq("2.11.8", "2.12.8")
+
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.6" % Test
+
