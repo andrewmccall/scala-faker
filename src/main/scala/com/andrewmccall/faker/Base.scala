@@ -1,6 +1,5 @@
 package com.andrewmccall.faker
 
-import java.io.File
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 
@@ -8,7 +7,6 @@ import scala.annotation.tailrec
 
 object Base {
 
-  private var random: Random = ThreadLocalRandom.current()
   val alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
   /**
@@ -22,7 +20,7 @@ object Base {
   def numerify(numberString: String, leadingZeros: Boolean = false, pos: Int = 0): String = {
 
     def randomInt(allowZeros: Boolean = true): Int = {
-      if (allowZeros) random.nextInt(10) else random.nextInt(9) + 1
+      if (allowZeros) Faker.random.nextInt(10) else Faker.random.nextInt(9) + 1
     }
 
     if (pos == numberString.length) numberString
@@ -37,15 +35,20 @@ object Base {
   }
 
   def letterify(str: String) : String = {
-    str.map(c => if (c.equals('?')) alpha(random.nextInt.abs % alpha.size) else c)
+    str.map(c => if (c.equals('?')) alpha(Faker.random.nextInt.abs % alpha.size) else c)
   }
 
   def bothify(str: String) : String = {
     letterify(numerify(str))
   }
 
-  def setRandom(random: Random): Unit = {
-    this.random = random
+  def fetch (key: String): String = {
+    ""
   }
+
+  def translate(): String = {
+    Faker.locale
+  }
+
 
 }
