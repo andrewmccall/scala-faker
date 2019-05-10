@@ -53,4 +53,16 @@ class BaseSpec extends FlatSpec {
     assert(result.equals("64-D8M-C4"))
   }
 
+  "A string that starts with /^ and ends with $/" should "be treated as a regex" in {
+    val not = "[ABC]"
+    assert(!Base.isRegex(not), s"'${not}' should not be identified as a regex")
+    val yep = "/^" + not + "$/"
+    assert(Base.isRegex(yep), s"'${yep}' should be identified as a regex.")
+    val example = "/^[A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}$/"
+    assert(Base.isRegex(example), "The example from the regexify method should be true.")
+
+    val missingSlashes = "^" + not + "$"
+    assert(!Base.isRegex(missingSlashes), "Missing the slashes isn't the correct anchor.")
+  }
+
 }

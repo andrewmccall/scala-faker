@@ -18,7 +18,7 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
 
   def fetch(key: String): Either[String, Seq[String]] = {
     logger.debug(s"Fetching key ${key}")
-    fetchIn(key.split("\\."), data)
+    fetchIn("\\.".r.split(key), data)
   }
 
   @tailrec
@@ -59,7 +59,7 @@ object YamlData {
     val files = getFilesForClass(this.getClass, "com/andrewmccall/faker/locales")
 
     logger.info(s"Loading keys from ${files.length} files")
-    files.foreach(logger.trace)
+    if (logger.isDebugEnabled()) files.foreach(logger.debug)
 
     val data = files.map(x => {
       yaml.load(new FileReader(x)).asInstanceOf[java.util.Map[String, Any]].asScala.toMap

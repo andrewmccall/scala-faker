@@ -4,11 +4,7 @@ import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 
 import com.andrewmccall.faker.util.YamlData
-class Faker {
-
-
-
-}
+class Faker {}
 object Faker {
 
   var locale = "en"
