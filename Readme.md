@@ -7,4 +7,5 @@ Configuration follows the existing faker standard.
 
     Faker.setLocale()
     Faker.setRandom()
-  
+    Faker.setData()
+    

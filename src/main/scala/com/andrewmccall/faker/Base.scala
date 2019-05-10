@@ -1,8 +1,5 @@
 package com.andrewmccall.faker
 
-import java.util.Random
-import java.util.concurrent.ThreadLocalRandom
-
 import scala.annotation.tailrec
 
 object Base {
@@ -42,12 +39,11 @@ object Base {
     letterify(numerify(str))
   }
 
-  def fetch (key: String): String = {
-    ""
-  }
-
-  def translate(): String = {
-    Faker.locale
+  def fetch(key: String) : String = {
+    Faker.data.fetch(key) match {
+      case Right(sample) => sample(Faker.random.nextInt(sample.size))
+      case Left(string) => string
+    }
   }
 
 
