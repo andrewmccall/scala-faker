@@ -16,18 +16,36 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
     this(YamlData.load())
   }
 
-  def fetch(key: String): Either[String, Seq[String]] = {
-    logger.debug(s"Fetching key ${key}")
+  override def fetch(key: String): Either[String, Seq[String]] = {
+    logger.debug(s"Fetching key $key")
     fetchIn("\\.".r.split(key), data)
+  }
+
+  override def contains(key: String) : Boolean = {
+    contains("\\.".r.split(key))
+  }
+
+  @tailrec
+  private[faker] final def contains(key: Seq[String], data: Map[String, Any] = this.data): Boolean = {
+    if (!data.contains(key.head)) false
+    else if (data.contains(key.head) && key.size == 1) true
+    else {
+      val value: Any = data(key.head)
+      val subMap: Map[String, Any] = value match {
+        case j: java.util.Map[String, _] => j.asScala.toMap
+        case _ => value.asInstanceOf[Map[String, Any]]
+      }
+      contains(key.drop(1), subMap)
+    }
   }
 
   @tailrec
   private[util] final def fetchIn(key: Array[String], data: Map[String, Any]): Either[String, Seq[String]] = {
 
-    logger.trace(s"Fetching in: ${key}")
+    logger.trace(s"Fetching in: $key")
     key.foreach(logger.trace(_))
 
-    val value: Any = data(key(0))
+    val value: Any = data(key.head)
     if (key.length == 1)
       value match {
         case l: java.util.List[String] => Right(l.asScala)
@@ -35,12 +53,8 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
       }
     else {
       val values = value match {
-        case m: java.util.Map[String, _] => {
-          m.asScala.toMap
-        }
-        case _ => {
-          value.asInstanceOf[Map[String, Any]]
-        }
+        case m: java.util.Map[String, _] => m.asScala.toMap
+        case _ => value.asInstanceOf[Map[String, Any]]
       }
       logger.trace(s"Has keys: ${values.keys}")
       fetchIn(key.drop(1), values)
@@ -51,7 +65,7 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
 
 object YamlData {
 
-  val logger = LogManager.getLogger(getClass)
+  private val logger = LogManager.getLogger(getClass)
 
   def load(): Map[String, Any] = {
     def yaml = new Yaml()
@@ -78,7 +92,6 @@ object YamlData {
   private[util] def mergeForKey(k: String, r: Map[String, Any], one: Map[String, Any], two: Map[String, Any]): Map[String, Any] = {
     // if the key isn't in one, just use two.
 
-
     if (!one.contains(k)) r + (k -> two(k))
     else if (!two.contains(k)) r + (k -> one(k))
     else {
@@ -91,9 +104,9 @@ object YamlData {
         }
         case m: java.util.Map[_, _] => two(k) match {
           case m: Map[String, _] => r + (k -> merge(one(k).asInstanceOf[java.util.Map[String, Any]].asScala.toMap, two(k).asInstanceOf[Map[String, Any]]))
-          case u: java.util.Map[String, _] => {
+          case u: java.util.Map[String, _] =>
             r + (k -> merge(one(k).asInstanceOf[java.util.Map[String, Any]].asScala.toMap, two(k).asInstanceOf[java.util.Map[String, Any]].asScala.toMap))
-          }
+
         }
         case _ => two(k) match {
           case m: Map[String, _] => r + (k -> two(k))
@@ -113,8 +126,8 @@ object YamlData {
     if (jarFile.isFile) { // Run with JAR file
       val jar = new JarFile(jarFile)
       val entries = jar.entries //gives ALL entries in jar
-      import scala.collection.JavaConversions._
-      val newFiles = entries.filter(_.getName.startsWith(path + "/")).filter(_.getName.endsWith(".yml")).map(_.getName)
+      import scala.collection.JavaConverters._
+      val newFiles = entries.asScala.filter(_.getName.startsWith(path + "/")).filter(_.getName.endsWith(".yml")).map(_.getName)
       jar.close()
       newFiles.toArray
     }

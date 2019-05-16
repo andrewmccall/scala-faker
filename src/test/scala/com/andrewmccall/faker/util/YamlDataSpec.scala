@@ -22,11 +22,12 @@ class YamlDataSpec extends FlatSpec with Logging {
     assert(files.contains("en-GB"))
   }
 
-  "A fetch call" should "get the right key" in {
+  "A known key" should "be contained and be returned" in {
     val data = new YamlData()
+    assert(data.contains("en.faker.name.name"))
+
     val result = data.fetch("en.faker.name.name")
     assert(result != null)
-    // result should be two things separated by a space?
   }
 
   "merging a map and a string" should "Return the map." in {

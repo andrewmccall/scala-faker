@@ -31,7 +31,7 @@ en:
         ad:
           # Andorra
           length: 24
-          bban_pattern: '\d{8}[A-Z0-9]{12}'
+          bban_pattern: '/^\d{8}[A-Z0-9]{12}$/'
         ae:
           # United Arab Emirates
           length: 23
