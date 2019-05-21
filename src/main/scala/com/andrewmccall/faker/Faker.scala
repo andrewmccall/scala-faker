@@ -6,10 +6,14 @@ import scala.annotation.tailrec
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
+import com.andrewmccall.faker.module.Module
+
 class Faker(config: Config) extends Logging {
 
   private val alpha = Seq.range('A', 'Z')
   private val lower = Seq.range('a', 'z')
+  private val letters = alpha ++ lower
+  private val modules = Module.loadModules(this, this.config)
 
   def apply(string: String): String = {
     parse(string)
@@ -17,26 +21,45 @@ class Faker(config: Config) extends Logging {
 
   private[faker] def parse(string: String, parentKey: String = null, locale: String = this.config.locale): String = {
 
+    val templateRegex = "#\\{(([A-Za-z]+\\.)?([^\\}]+))(:.*)?\\}?"
+    val templateMatch = (".*" + templateRegex + ".*").r
+    val keyRegex = "([A-Za-z]+\\.?)+".r
+
     logger.info(s"Parsing $string with parent $parentKey")
     // Start by trying to fetch the shorthand for a single key
-    val value = {
-      val key = getKey(string, parentKey, locale)
-      if (this.config.data.contains(key)) fetch(key) else string
+
+    // if we have a template, there is no need to try to find the key.
+    val value = string match {
+      case templateMatch(_*) => {
+        string
+      }
+      case keyRegex(_*) => {
+        val key = getKey(string, parentKey, locale)
+        if (this.modules.contains(key)) fetch(key, modules)
+        else if (this.config.data.contains(key)) fetch(key, config.data)
+        else string
+      }
+      case _ => {
+        string
+      }
     }
 
-    "#\\{(([A-Za-z]+\\.)?([^\\}]+))(:.*)?\\}?".r.replaceAllIn(value, m => {
+
+    templateRegex.r.replaceAllIn(value, m => {
 
       val key = m.group(1).toLowerCase
       val cls = if (m.group(2) != null) m.group(2).dropRight(1) else parentKey
       val meth = m.group(3)
-      val locale = m.group(4)
-
-      logger.trace(s"Parsing $key - class ($cls)  method ($meth) locale ($locale)")
+      val parsedLocale = if (m.group(4) != null) m.group(4) else locale
 
       // see if we have a module to handle this key.
       // otherwise grab it from the data.
-      if (config.data.contains(key))
-        parse(fetch(key), cls)
+      val parsedKey = getKey(key, cls, locale)
+
+      if (this.modules.contains(key))
+        parse(fetch(parsedKey, modules), cls, parsedLocale)
+      else if (this.config.data.contains(parsedKey))
+        parse(fetch(parsedKey, config.data), cls, parsedLocale)
       else {
         logger.info(s"Key not found $key")
         ""
@@ -92,7 +115,7 @@ class Faker(config: Config) extends Logging {
   }
 
   private[faker] def getKey(key: String, parentKey: String = null, locale: String = this.config.locale): String = {
-    val parts = key.split("\\.")
+    val parts = key.toLowerCase().split("\\.")
 
     // if the key is long enough and looks well constructed, we'll just return it.
     if (parts.length >= 3 && parts(1).equals("faker")) {
@@ -121,9 +144,9 @@ class Faker(config: Config) extends Logging {
     * @param key the key
     * @return a single value or a single entry from an array
     */
-  private[faker] def fetch(key: String): String = {
+  private[faker] def fetch(key: String, data: Data): String = {
 
-    val fetched = config.data.fetch(key) match {
+    val fetched = data.fetch(key) match {
       case Right(s) => sample(s)
       case Left(string) => string
     }
@@ -200,7 +223,22 @@ class Faker(config: Config) extends Logging {
         matcher.group(1) * sample(Seq.range(matcher.group(2).toInt, matcher.group(3).toInt + 1)))
       .replaceAllIn("(\\([^\\)]+\\))\\{(\\d+),(\\d+)\\}".r, matcher =>
         matcher.group(1) * sample(Seq.range(matcher.group(2).toInt, matcher.group(3).toInt + 1)))
+      .replaceAllIn("(\\\\?.)\\{(\\d+),(\\d+)\\}".r, matcher => {
+        val rep = if (matcher.group(1).length > 1) "\\" + matcher.group(1) else matcher.group(1)
+        rep * sample(Seq.range(matcher.group(2).toInt, matcher.group(3).toInt + 1))
+      }).replaceAllIn("\\((.*?)\\)".r, matcher => sample(matcher.group(1).split('|').toSeq))
+      .replaceAllIn("\\[.*?(\\w-\\w).*?\\]".r, matcher =>
+        matcher.subgroups.foldLeft(matcher.group(0))(
+          (s, g) => {
+            val range = g.charAt(0) to g.charAt(2)
+            s.replace(s, sample(range).toString)
+          }
+        ))
+      .replaceAllIn("\\[([^\\]]+)\\]".r, matcher =>  sample(matcher.group(1).split("")))
+      .replaceAllIn("\\\\w".r, _ => sample(letters).toString)
+      .replaceAllIn("\\\\d".r, _ => sample(0 to 9).toString)
   }
+
 
 
   class RegexFunctionString(s: String) {
@@ -210,28 +248,5 @@ class Faker(config: Config) extends Logging {
   }
 
   implicit def stringToRegexFunctionString(s: String): RegexFunctionString = new RegexFunctionString(s)
-
-  /*
-
-.gsub(/(\\?.)\{(\d+),(\d+)\}/) { |_match| Regexp.last_match(1) * sample(Array(Range.new(Regexp.last_match(2).to_i, Regexp.last_match(3).to_i))) }                      # A{1,2} becomes A or AA or \d{3} becomes \d\d\d
-.gsub(/\((.*?)\)/) { |match| sample(match.gsub(/[\(\)]/, '').split('|')) } # (this|that) becomes 'this' or 'that'
-.gsub(/\[([^\]]+)\]/) { |match| match.gsub(/(\w\-\w)/) { |range| sample(Array(Range.new(*range.split('-')))) } } # All A-Z inside of [] become C (or X, or whatever)
-.gsub(/\[([^\]]+)\]/) { |_match| sample(Regexp.last_match(1).split('')) } # All [ABC] become B (or A or C)
-.gsub('\d') { |_match| sample(Numbers) }
-.gsub('\w') { |_match| sample(Letters) }
-}
-
-# Helper for the common approach of grabbing a translation
-# with an array of values and selecting one of them.
-def fetch(key)
-fetched = sample(translate("faker.#{key}"))
-if fetched&.match(%r{^\/}) && fetched&.match(%r{\/$}) # A regex
-regexify(fetched)
-else
-fetched
-end
-end
-*/
-
 
 }

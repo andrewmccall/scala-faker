@@ -9,19 +9,27 @@ This code uses the YAML files from the ruby faker project and implements all the
 Configuration follows the existing faker standard. 
 
     val faker = new Faker()
-    val someString = faker("Name.name")
+    val someString = faker("name.name")
 
 ##Keys in strings
 {} is the standard notation for embedding a key. 
 
-    val key = "Hi! My name is ${Name.name}"
+    val string = "Hi! My name is #{Name.name}"
+    val result = faker(string)
    
 
 ## Using a different locale. 
 Individual calls to faker() can provided a locale for individual keys. 
 
-    val key = "Hi! My name is ${Name.name:de}"
-  
+    val key = "Hi! My name is #{Name.name:de}"
+    
+## Parameters
+Calls to some methods may accept parameters, these can be provided as below: 
+
+    val key = "My address is #{address.address(param=value, param2=value)}
+    
+This can be combined with locales where appropriate and to enable keys to return other keys
+    val key = "My address is #{address.address(param=value, param2=value):en-CA}
 
 
 ##Configuration
@@ -45,3 +53,31 @@ By default
     Faker.setRandom()
     Faker.setData()
     
+## Modules
+Modules define the namespaces for the differetn fakers and are a combination of YAML 
+configuration files and functions. 
+    
+## Adding YAML files. 
+
+    faker.load(yaml)
+
+    en:
+        faker:
+            <module>:
+                key: value
+    
+
+## Custom functions
+
+Custom functions should be annotated with the @faker annotation and provide a module. Classes are registered any any 
+functions annotated with @faker will be automatically registered.
+
+    class MyModule {
+    
+        @faker("module-name")
+        def something() : String = {
+            "#{name.name}"
+        }
+    }
+
+    faker.register(class) 

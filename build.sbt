@@ -7,6 +7,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.6" % Test
 libraryDependencies += "org.mockito" %% "mockito-scala" % "1.4.1" % Test
 libraryDependencies += "org.mockito" %% "mockito-scala-scalatest" % "1.4.1" % Test
 libraryDependencies += "org.yaml" % "snakeyaml" % "1.24"
+libraryDependencies += "org.reflections" % "reflections" % "0.9.11"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.8.2"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.8.2"
 libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0"

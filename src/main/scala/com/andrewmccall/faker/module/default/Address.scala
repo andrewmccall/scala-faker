@@ -1,22 +1,26 @@
-package com.andrewmccall.faker.modules.default
+package com.andrewmccall.faker.module.default
 
-import com.andrewmccall.faker.modules.Base
+import com.andrewmccall.faker.module.faker
 import com.andrewmccall.faker.{Config, Faker}
 
-class Address(faker: Faker, config: Config) extends Base {
+class Address(faker: Faker, config: Config) {
 
-  def country_by_code(code: String = "US"): String = {
+  @faker
+  def countryByCode(code: String = "US"): String = {
     faker("address.country_by_code." + code)
   }
 
-  def country_name_to_code(name: String = "united_states"): String ={
+  @faker
+  def countryNameToCode(name: String = "united_states"): String ={
     faker("address.country_by_name." +name)
   }
 
+  @faker
   def latitude(): Float = {
     (config.random.nextFloat() * 180) - 90
   }
 
+  @faker
   def longitude: Float = {
     (config.random.nextFloat() * 360) - 180
   }
