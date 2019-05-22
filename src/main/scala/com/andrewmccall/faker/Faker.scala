@@ -158,6 +158,23 @@ class Faker(config: Config) extends Logging {
   }
 
   /**
+    * Fetches any subkeys contained in a key
+    * :TODO: Does this belong in data? I'm searching here because I know it wont happen in a module, at least not so far.
+    *
+    * @param key the parent key
+    * @return an Iterable[String] of subkeys
+    */
+  private[faker] def fetchKeys(key: String) : Iterable[String] = {
+    val parsedKey = getKey(key)
+    import scala.collection.JavaConverters._
+    if (!config.data.contains(parsedKey)) Iterable.empty[String]
+    else config.data.fetch(parsedKey) match {
+      case j: java.util.Map[String, _] => j.asScala.toMap.keys
+      case o => o.asInstanceOf[Map[String, Any]].keys
+    }
+  }
+
+  /**
     * Checks if the string has the anchors. if so, assume it's a regex.
     *
     * @param s the string to check
