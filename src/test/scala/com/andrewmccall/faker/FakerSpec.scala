@@ -8,7 +8,7 @@ import org.scalatest.{AppendedClues, FlatSpec, Matchers}
 class FakerSpec extends FlatSpec with Matchers with AppendedClues with IdiomaticMockito {
 
   private class EmptyData extends Data {
-    override def fetch(key: String): Either[String, Seq[String]] = ???
+    override def fetch(key: String): Entry = ???
   }
 
   private val data = new EmptyData
@@ -105,7 +105,7 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data=mockData))
     mockData.contains("en.faker.name.name") shouldReturn true
-    mockData.fetch("en.faker.name.name") shouldReturn Left("World")
+    mockData.fetch("en.faker.name.name") shouldReturn StringEntry("World")
 
     assert("World" == faker(string))
 
@@ -118,12 +118,12 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data=mockData))
     mockData.contains("en.faker.name.name") shouldReturn true
-    mockData.fetch("en.faker.name.name") shouldReturn Left("World")
+    mockData.fetch("en.faker.name.name") shouldReturn StringEntry("World")
 
     assert("Hello World!" == faker(string))
 
     mockData.contains("en.faker.world") shouldReturn true
-    mockData.fetch("en.faker.world") shouldReturn Left("World")
+    mockData.fetch("en.faker.world") shouldReturn StringEntry("World")
     assert("Hello World!!" == faker("Hello #{world}!!" ))
   }
 
@@ -174,6 +174,8 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
   "A string that starts with / and ends with /" should "be treated a simple replacement" in {
     val faker = new Faker(new Config(random = new Random(18), data = data))
     val string = "/###-???/"
+    assert(!faker.isRegex(string))
+    assert(faker.isReplacement(string))
     assert(faker.bothify(string) == "648-UCR")
   }
 

@@ -2,7 +2,7 @@ package com.andrewmccall.faker.util
 
 import java.io.{File, FileReader}
 
-import com.andrewmccall.faker.Data
+import com.andrewmccall.faker.{Data, Entry, SeqEntry, StringEntry}
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.scala.Logging
 import org.yaml.snakeyaml.Yaml
@@ -16,7 +16,7 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
     this(YamlData.load())
   }
 
-  override def fetch(key: String): Either[String, Seq[String]] = {
+  override def fetch(key: String): Entry = {
     logger.debug(s"Fetching key $key")
     fetchIn("\\.".r.split(key), data)
   }
@@ -40,23 +40,18 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
   }
 
   @tailrec
-  private[util] final def fetchIn(key: Array[String], data: Map[String, Any]): Either[String, Seq[String]] = {
-
-    logger.trace(s"Fetching in: $key")
-    key.foreach(logger.trace(_))
-
+  private[util] final def fetchIn(key: Array[String], data: Map[String, Any]): Entry = {
     val value: Any = data(key.head)
     if (key.length == 1)
       value match {
-        case l: java.util.List[String] => Right(l.asScala)
-        case _ => Left(value.asInstanceOf[String])
+        case l: java.util.List[String] => SeqEntry(l.asScala)
+        case _ => StringEntry(value.asInstanceOf[String])
       }
     else {
       val values = value match {
         case m: java.util.Map[String, _] => m.asScala.toMap
         case _ => value.asInstanceOf[Map[String, Any]]
       }
-      logger.trace(s"Has keys: ${values.keys}")
       fetchIn(key.drop(1), values)
     }
   }
@@ -72,14 +67,14 @@ object YamlData {
 
     val files = getFilesForClass(this.getClass, "com/andrewmccall/faker/locales")
 
-    logger.info(s"Loading keys from ${files.length} files")
+    logger.debug(s"Loading keys from ${files.length} files")
     if (logger.isDebugEnabled()) files.foreach(logger.debug)
 
     val data = files.map(x => {
       yaml.load(new FileReader(x)).asInstanceOf[java.util.Map[String, Any]].asScala.toMap
     })
 
-    logger.debug(s"Data contains ${data.length} Maps.")
+    logger.trace(s"Data contains ${data.length} Maps.")
 
     data.reduce(merge)
   }

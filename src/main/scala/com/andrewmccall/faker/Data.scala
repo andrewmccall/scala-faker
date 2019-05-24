@@ -2,7 +2,7 @@ package com.andrewmccall.faker
 
 trait Data {
 
-  def fetch(key: String) : Either[String, Seq[String]]
+  def fetch(key: String) : Entry
 
   def contains(key: String) : Boolean = false
 

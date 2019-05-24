@@ -9,7 +9,7 @@ Configuration:
     logger:
       -
         name: com.andrewmccall.faker
-        level: trace
+        level: info
         additivity: false
         AppenderRef:
           ref: STDOUT

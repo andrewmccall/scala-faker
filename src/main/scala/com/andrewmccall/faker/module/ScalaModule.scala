@@ -1,13 +1,13 @@
 package com.andrewmccall.faker.module
 
-import com.andrewmccall.faker.{Config, Data, Faker}
+import com.andrewmccall.faker.{Config, Data, Entry, Faker, Namespace, StringEntry}
 import org.apache.logging.log4j.scala.Logging
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.util.{ClasspathHelper, ConfigurationBuilder}
 
 import scala.reflect.runtime.universe._
 
-class Module(clazz: Class[_], faker: Faker, config: Config) extends Logging {
+class ScalaModule(clazz: Class[_], faker: Faker, config: Config) extends Logging {
 
   private val rm = scala.reflect.runtime.currentMirror
   private val t = rm.classSymbol(this.clazz).toType
@@ -66,12 +66,12 @@ class Module(clazz: Class[_], faker: Faker, config: Config) extends Logging {
   }
 
   private def snakify(symbol: Symbol): String = {
-    Module.snakify(symbol.fullName)
+    ScalaModule.snakify(symbol.fullName)
   }
 
 }
 
-object Module extends Logging {
+object ScalaModule extends Logging {
 
   def loadModules(faker: Faker, config: Config): Data = {
 
@@ -95,7 +95,7 @@ object Module extends Logging {
 
     new ModuleData(modules.asScala.map(_.getDeclaringClass).toSeq.distinct.map(c => {
         logger.debug(s"Creating new ${c.getName} as ${c.getSimpleName}")
-        val mod = new Module(c, faker, config)
+        val mod = new ScalaModule(c, faker, config)
         mod.getName -> mod
     }).toMap)
   }
@@ -107,7 +107,7 @@ object Module extends Logging {
     */
   private[module] def snakify(name: String) = name.replaceAll("([A-Z]+)([A-Z][a-z])", "$1_$2").replaceAll("([a-z\\d])([A-Z])", "$1_$2").toLowerCase
 
-  private class ModuleData(modules: Map[String, Module]) extends Data {
+  private class ModuleData(modules: Map[String, ScalaModule]) extends Data {
 
 
     private def parseKey(key: String): (String, String) = {
@@ -116,9 +116,9 @@ object Module extends Logging {
       else ("","")
     }
 
-    override def fetch(key: String): Either[String, Seq[String]] = {
+    override def fetch(key: String): Entry = {
       val parsedKey = parseKey(key)
-      Left(modules(parsedKey._1).apply(parsedKey._2, Map.empty).toString)
+      StringEntry(modules(parsedKey._1).apply(parsedKey._2, Map.empty).toString)
     }
     override def contains(key: String): Boolean = {
       val parsedKey = parseKey(key)

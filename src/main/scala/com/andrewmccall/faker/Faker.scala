@@ -6,14 +6,15 @@ import scala.annotation.tailrec
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
-import com.andrewmccall.faker.module.Module
+import com.andrewmccall.faker.module.ScalaModule
 
-class Faker(config: Config) extends Logging {
+class Faker(config: Config = new Config()) extends Logging {
 
   private val alpha = Seq.range('A', 'Z')
   private val lower = Seq.range('a', 'z')
   private val letters = alpha ++ lower
-  private val modules = Module.loadModules(this, this.config)
+  private val modules = ScalaModule.loadModules(this, this.config)
+
 
   def apply(string: String): String = {
     parse(string)
@@ -25,7 +26,7 @@ class Faker(config: Config) extends Logging {
     val templateMatch = (".*" + templateRegex + ".*").r
     val keyRegex = "([A-Za-z]+\\.?)+".r
 
-    logger.info(s"Parsing $string with parent $parentKey")
+    logger.trace(s"Parsing $string with parent $parentKey")
     // Start by trying to fetch the shorthand for a single key
 
     // if we have a template, there is no need to try to find the key.
@@ -141,20 +142,23 @@ class Faker(config: Config) extends Logging {
     * Helper function that grabs a key and returns the value or randomly selects one element of an array and returns
     * that if the return type is an array.
     *
+    * If the returned key contains the regex anchors it will be regexified. If it contains the replacement anchors it
+    * will be replaced.
+    *
     * @param key the key
     * @return a single value or a single entry from an array
     */
   private[faker] def fetch(key: String, data: Data): String = {
 
     val fetched = data.fetch(key) match {
-      case Right(s) => sample(s)
-      case Left(string) => string
+      case SeqEntry(s) => sample(s)
+      case StringEntry(s) => s
     }
     if (isRegex(fetched))
       regexify(fetched)
     else if (isReplacement(fetched))
       bothify(fetched)
-    fetched
+    else fetched
   }
 
   /**
