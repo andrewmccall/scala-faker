@@ -1,5 +1,6 @@
 # Scala Faker
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/03d864954ec14baea4967612b454cb62)](https://app.codacy.com/app/andrewmccall/scala-faker?utm_source=github.com&utm_medium=referral&utm_content=andrewmccall/scala-faker&utm_campaign=Badge_Grade_Dashboard)
 [![BuildStatus](https://travis-ci.com/andrewmccall/scala-faker.svg?branch=master)](https://travis-ci.com/andrewmccall/scala-faker.svg?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/83771e22887b4d5af622/test_coverage)](https://codeclimate.com/github/andrewmccall/scala-faker/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/83771e22887b4d5af622/maintainability)](https://codeclimate.com/github/andrewmccall/scala-faker/maintainability)
 
 An implementation fo the [Ruby faker library](https://github.com/stympy/faker) in scala. The intial implementation is a direct port of the ruby code to 
