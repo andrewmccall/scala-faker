@@ -4,35 +4,21 @@ scala, updates have tried to make it more scala like.
 
 This code uses the YAML files from the ruby faker project and implements all the methods supported there.
 
-#Usage
+# Usage
 
 Configuration follows the existing faker standard. 
 
     val faker = new Faker()
     val someString = faker("name.name")
 
-##Keys in strings
+## Keys in strings
 {} is the standard notation for embedding a key. 
 
     val string = "Hi! My name is #{Name.name}"
     val result = faker(string)
    
 
-## Using a different locale. 
-Individual calls to faker() can provided a locale for individual keys. 
-
-    val key = "Hi! My name is #{Name.name:de}"
-    
-## Parameters
-Calls to some methods may accept parameters, these can be provided as below: 
-
-    val key = "My address is #{address.address(param=value, param2=value)}
-    
-This can be combined with locales where appropriate and to enable keys to return other keys
-    val key = "My address is #{address.address(param=value, param2=value):en-CA}
-
-
-##Configuration
+## Configuration
 
 ### Locales
     val config = new Config(locale="en-GB")
