@@ -116,14 +116,22 @@ object ScalaModule extends Logging {
       else ("","")
     }
 
-    override def fetch(key: String): Entry = {
+    override def fetch(key: String, locale: Option[String] = None, defaultLocale: String = Faker.defaultLocale): Option[Entry] = {
       val parsedKey = parseKey(key)
-      StringEntry(modules(parsedKey._1).apply(parsedKey._2, Map.empty).toString)
+      Some(StringEntry(modules(parsedKey._1).apply(parsedKey._2, Map.empty).toString))
     }
-    override def contains(key: String): Boolean = {
+    override def contains(key: String, locale: Option[String] = None, defaultLocale: String = Faker.defaultLocale): Boolean = {
       val parsedKey = parseKey(key)
       modules.contains(parsedKey._1) && modules(parsedKey._1).contains(parsedKey._2)
     }
+
+    /**
+      * Fetches any sub-keys for a key in this data.
+      *
+      * @param key
+      * @return
+      */
+    override def getKeys(): Iterable[String] = modules.keys
   }
 
 

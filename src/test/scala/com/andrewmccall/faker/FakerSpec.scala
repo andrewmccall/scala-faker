@@ -8,7 +8,8 @@ import org.scalatest.{AppendedClues, FlatSpec, Matchers}
 class FakerSpec extends FlatSpec with Matchers with AppendedClues with IdiomaticMockito {
 
   private class EmptyData extends Data {
-    override def fetch(key: String): Entry = ???
+    override def fetch(key: String, locale: Option[String], defaultLocale: String): Option[Entry] = ???
+    override def getKeys(): Iterable[String] = ???
   }
 
   private val data = new EmptyData
@@ -105,7 +106,7 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data=mockData))
     mockData.contains("en.faker.name.name") shouldReturn true
-    mockData.fetch("en.faker.name.name") shouldReturn StringEntry("World")
+    mockData.fetch("en.faker.name.name") shouldReturn Some(StringEntry("World"))
 
     assert("World" == faker(string))
 
@@ -118,12 +119,12 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data=mockData))
     mockData.contains("en.faker.name.name") shouldReturn true
-    mockData.fetch("en.faker.name.name") shouldReturn StringEntry("World")
+    mockData.fetch("en.faker.name.name") shouldReturn Some(StringEntry("World"))
 
     assert("Hello World!" == faker(string))
 
     mockData.contains("en.faker.world") shouldReturn true
-    mockData.fetch("en.faker.world") shouldReturn StringEntry("World")
+    mockData.fetch("en.faker.world") shouldReturn Some(StringEntry("World"))
     assert("Hello World!!" == faker("Hello #{world}!!" ))
   }
 

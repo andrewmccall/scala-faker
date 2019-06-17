@@ -1,4 +1,4 @@
-package com.andrewmccall.faker.util
+package com.andrewmccall.faker.yaml
 
 import org.apache.logging.log4j.scala.Logging
 import org.scalatest.FlatSpec

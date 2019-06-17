@@ -15,6 +15,7 @@ class Faker(config: Config = new Config()) extends Logging {
   private val letters = alpha ++ lower
   private val modules = ScalaModule.loadModules(this, this.config)
 
+  //private val root: Namespace = _
 
   def apply(string: String): String = {
     parse(string)
@@ -26,7 +27,7 @@ class Faker(config: Config = new Config()) extends Logging {
     val templateMatch = (".*" + templateRegex + ".*").r
     val keyRegex = "([A-Za-z]+\\.?)+".r
 
-    logger.trace(s"Parsing $string with parent $parentKey")
+    logger.info(s"Parsing $string with parent $parentKey")
     // Start by trying to fetch the shorthand for a single key
 
     // if we have a template, there is no need to try to find the key.
@@ -150,7 +151,9 @@ class Faker(config: Config = new Config()) extends Logging {
     */
   private[faker] def fetch(key: String, data: Data): String = {
 
-    val fetched = data.fetch(key) match {
+
+
+    val fetched = data.fetch(key).get match {
       case SeqEntry(s) => sample(s)
       case StringEntry(s) => s
     }
@@ -269,5 +272,11 @@ class Faker(config: Config = new Config()) extends Logging {
   }
 
   implicit def stringToRegexFunctionString(s: String): RegexFunctionString = new RegexFunctionString(s)
+
+}
+
+object Faker {
+
+  val defaultLocale : String = "en"
 
 }

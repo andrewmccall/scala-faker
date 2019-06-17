@@ -3,9 +3,9 @@ package com.andrewmccall.faker
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 
-import com.andrewmccall.faker.util.YamlData
+import com.andrewmccall.faker.yaml.YamlData
 
-class Config (val locale: String = "en", val random: Random = ThreadLocalRandom.current(), val data: Data = new YamlData()) {
+class Config(val locale: String = Faker.defaultLocale, val random: Random = ThreadLocalRandom.current(), val data: Data = new YamlData()) {
 
   var modules: Map[String, (_) => String] = _
 
