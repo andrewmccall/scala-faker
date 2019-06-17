@@ -81,8 +81,6 @@ object YamlData {
       yaml.load(new FileReader(x)).asInstanceOf[java.util.Map[String, Any]].asScala.toMap
     })
 
-    logger.trace(s"Data contains ${data.length} Maps.")
-
     data.reduce(merge)
   }
 

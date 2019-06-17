@@ -8,8 +8,6 @@ class YamlDataSpec extends FlatSpec with Logging {
   "some files" should "get loaded" in {
     val files = YamlData.getFilesForClass(this.getClass, "test/yaml")
 
-    logger.info(s"Loaded files $files")
-
     assert(files.length == 2)
     assert(files(0).endsWith("a.yaml"))
     assert(files(1).endsWith("b.yaml"))
@@ -17,7 +15,6 @@ class YamlDataSpec extends FlatSpec with Logging {
 
   "Loading without a Class or path" should "load the base YAML" in {
     val files = YamlData.load()
-    logger.info(s"Loaded $files")
     assert(files.contains("en"))
     assert(files.contains("en-GB"))
   }
@@ -35,7 +32,6 @@ class YamlDataSpec extends FlatSpec with Logging {
     val string = Map( "a" -> "taco")
 
     val result = YamlData.merge(map, string)
-    println(result)
     assert(result == map)
 
   }
@@ -57,18 +53,12 @@ class YamlDataSpec extends FlatSpec with Logging {
     var a :Map[String, Any] = Map ("foo" -> Map("bar" -> "foo_bar_value", "biz" -> "foo_biz_value"))
     var b :Map[String, Any] = Map ("foo" -> Map("bar2" -> "foo2_bar2_value", "biz1" -> "foo2_biz2_value"))
 
-    logger.info(s"Merging maps: ${a} & ${b}")
-
     var expected : Map[String, Any] = Map (
       "foo" -> Map(
         "bar" -> "foo_bar_value", "biz" -> "foo_biz_value",
         "bar2" -> "foo2_bar2_value", "biz1" -> "foo2_biz2_value"))
 
-    logger.info("Checking equality")
-
     assert(YamlData.merge(a, b) == expected)
-
-    println("Round two!")
 
     a = Map ("foo" -> Map("bar" -> Map( "val1" -> "foo_bar_value", "biz" -> "foo_biz_value")))
     b = Map (
