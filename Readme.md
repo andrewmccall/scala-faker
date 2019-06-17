@@ -1,4 +1,7 @@
 # Scala Faker
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/83771e22887b4d5af622/test_coverage)](https://codeclimate.com/github/andrewmccall/scala-faker/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/83771e22887b4d5af622/maintainability)](https://codeclimate.com/github/andrewmccall/scala-faker/maintainability)
+
 An implementation fo the [Ruby faker library](https://github.com/stympy/faker) in scala. The intial implementation is a direct port of the ruby code to 
 scala, updates have tried to make it more scala like. 
 
