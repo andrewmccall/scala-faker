@@ -12,8 +12,8 @@ class YamlDataSpec extends FlatSpec with Logging {
 
     files.foreach(f => logger.info(s"File $f"))
 
-    assert(files(0).endsWith("a.yaml"))
-    assert(files(1).endsWith("b.yaml"))
+    assert(files(0).endsWith("a.yaml") || files(0).endsWith("b.yaml"))
+    assert(files(1).endsWith("a.yaml") || files(1).endsWith("b.yaml"))
   }
 
   "Loading without a Class or path" should "load the base YAML" in {
