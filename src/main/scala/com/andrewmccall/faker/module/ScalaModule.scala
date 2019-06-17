@@ -48,20 +48,20 @@ class ScalaModule(clazz: Class[_], faker: Faker, config: Config) extends Logging
 
   def getDefaultArguments(ms: MethodSymbol): Map[String, Any] = {
 
-    logger.info(s"Getting default arguments for Method ${ms.name}")
+    logger.trace(s"Getting default arguments for Method ${ms.name}")
 
     val args = ms.paramLists.head.map(_.asTerm).filter(_.isParamWithDefault).zipWithIndex.map({ case (p, i) => {
 
-      logger.info(s"Finding paramenter ${p} for index ${i}")
+      logger.trace(s"Finding paramenter ${p} for index ${i}")
       val term = TermName(s"${ms.name.toString}$$default$$${i + 1}")
-      logger.info(s"Method name will be: ${term.toString}")
+      logger.trece(s"Method name will be: ${term.toString}")
       val method = t.member(term).asMethod
-      logger.info(s"Got method ${method}")
+      logger.trace(s"Got method ${method}")
       (p.name.toString, rm.reflect(instance).reflectMethod(method).apply())
     }
     }).toMap
 
-    logger.info(s"Arguments ${args}")
+    logger.debug(s"${ms.name} has arguments ${args}")
     args
   }
 
@@ -89,7 +89,7 @@ object ScalaModule extends Logging {
     import scala.collection.JavaConverters._
 
     for (elem <- modules.asScala.toSeq) {
-      logger.info(s"Found $elem ${elem.getDeclaringClass}")
+      logger.trace(s"Found $elem ${elem.getDeclaringClass}")
     }
 
 
