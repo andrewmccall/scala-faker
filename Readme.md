@@ -1,29 +1,28 @@
 # Scala Faker
 
-[![BuildStatus](https://travis-ci.com/andrewmccall/scala-faker.svg?branch=master)](https://travis-ci.com/andrewmccall/scala-faker.svg?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/83771e22887b4d5af622/test_coverage)](https://codeclimate.com/github/andrewmccall/scala-faker/test_coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a2a7e12bd5aa48109ded58c3675fdf42)](https://www.codacy.com/app/andrewmccall/scala-faker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andrewmccall/scala-faker&amp;utm_campaign=Badge_Grade)
+[![BuildStatus](https://travis-ci.com/andrewmccall/scala-faker.svg?branch=master)](https://travis-ci.com/andrewmccall/scala-faker.svg?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/a2a7e12bd5aa48109ded58c3675fdf42)](https://www.codacy.com/app/andrewmccall/scala-faker?utm_source=github.com&utm_medium=referral&utm_content=andrewmccall/scala-faker&utm_campaign=Badge_Coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a2a7e12bd5aa48109ded58c3675fdf42)](https://www.codacy.com/app/andrewmccall/scala-faker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andrewmccall/scala-faker&amp;utm_campaign=Badge_Grade)
 
 An implementation fo the [Ruby faker library](https://github.com/stympy/faker) in scala. The intial implementation is a direct port of the ruby code to 
 scala, updates have tried to make it more scala like. 
 
 This code uses the YAML files from the ruby faker project and implements all the methods supported there.
 
-# Usage
+## Usage
 
 Configuration follows the existing faker standard. 
 
     val faker = new Faker()
     val someString = faker("name.name")
 
-## Keys in strings
+### Keys in strings
 {} is the standard notation for embedding a key. 
 
     val string = "Hi! My name is #{Name.name}"
     val result = faker(string)
-   
 
-## Configuration
+### Configuration
 
-### Locales
+#### Locales
 A faker can be configured for a different locale, allowing different languages and formats of keys to be returned. eg. UK Addresses.
 
     val config = new Config(locale="en-GB")
@@ -31,7 +30,7 @@ A faker can be configured for a different locale, allowing different languages a
     
 Keys that are not found in the selected locale are automatically looked up in the `en` locale.
 
-### Random implementation
+#### Random implementation
 The default random implementation uses a ThreadlocalRandom.current() to generate random numbers. This can be overriden 
 if for example you need to provide a seed for reproducibility by setting another subclass of java.util.Random in the 
 config.
