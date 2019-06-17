@@ -54,7 +54,7 @@ class ScalaModule(clazz: Class[_], faker: Faker, config: Config) extends Logging
 
       logger.trace(s"Finding paramenter ${p} for index ${i}")
       val term = TermName(s"${ms.name.toString}$$default$$${i + 1}")
-      logger.trece(s"Method name will be: ${term.toString}")
+      logger.trace(s"Method name will be: ${term.toString}")
       val method = t.member(term).asMethod
       logger.trace(s"Got method ${method}")
       (p.name.toString, rm.reflect(instance).reflectMethod(method).apply())
