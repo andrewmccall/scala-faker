@@ -1,7 +1,7 @@
 name := "scala-faker"
 organization := "com.andrewmccall.faker"
 version := "1.0-SNAPSHOT"
-crossScalaVersions := Seq("2.11.8", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0")
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.6" % Test
 libraryDependencies += "org.mockito" %% "mockito-scala" % "1.4.1" % Test

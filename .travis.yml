@@ -1,16 +1,22 @@
+sudo: false
 language: scala
+scala:
+  - 2.11.12
+  - 2.12.8
+  - 2.13.0
 script:
-- sbt clean coverage test
-- sbt coverageReport
-- sbt coverageAggregate
+  - sbt ++$TRAVIS_SCALA_VERSION coverage test
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
+  - sbt ++$TRAVIS_SCALA_VERSION coverageReport
+  - sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 after_success:
-- sbt codacyCoverage
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then sbt ++$TRAVIS_SCALA_VERSION releaseEarly;
-  fi
+  - sbt codacyCoverage
+  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then sbt ++$TRAVIS_SCALA_VERSION releaseEarly;
+    fi
 before_install:
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_0ab0f5a4b4c9_key
-  -iv $encrypted_0ab0f5a4b4c9_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar
-  -d; tar xv -C travis -f travis/local.secrets.tar; fi
+  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_0ab0f5a4b4c9_key
+    -iv $encrypted_0ab0f5a4b4c9_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar
+    -d; tar xv -C travis -f travis/local.secrets.tar; fi
 env:
   global:
   - secure: MdrMu5Mdjn3dEZSWNu9pMBGnPK/upCBmOcyb3JfTaHCsLDWe8F0QDH8v1XMQtzAFFFyarhuOMSxGUxFHURXl++ClkHMDHcGfat1sDersIy1yXzyr5AZZntSVpgAdj7XDB/K5Y5Ly+c/BWCIgZrEY3q0OH3zHTO9jT9kbge9ixqbDlghdfV+9Lg7VWH8DAxYxNGflC7HU8ZVjlTzjO3UTxAZQVh7iJ3f6QxngGktA7Z1JboMTXihnpSfhdtq1XWCVKU2ArVy24i3QPOlyKrgYfoevCMNEgrddXfRDpql4kShTHgSuRbx5DHcODbphN8SAwWCsSynYSnFV3BDgkG8mNNXy2u++czEl6v3Uj0zyQCPydyyiL8vrg7hnKKEgNjoUfTW9x/aauaq/sgRe3Y4ccoDDRNaFUlw4ctylFmT8M4GBl/vSxIwlBSR193QOBPL8Bv3w7tC7SV2+MNV9GrAWPkkBzczeU6ZNO56AcAyaxASQOC3D0ztbvXa3gR3XDz2n4PBQIiAdxJ38BLvPNZlCX/QQfl2YYsiSXXv1L5wPPpSWyJKSLHwAO+Z5hKGcyZfQjYEtoZnV87SeCjbjy4KLAPKtq9yEULo8dh8DPaI7AEAcf+mPoZJp14OYfmH5iX35dJElPuxMuBI3A/DZhjLHq6A2jrWlfpaMa+AUX2B2QCk=
