@@ -14,3 +14,6 @@ libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0"
 
 libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.7.3"
 libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.5.4"
+
+pgpPublicRing := file("./travis/local.pubring.asc")
+pgpSecretRing := file("./travis/local.secring.asc")
