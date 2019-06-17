@@ -9,6 +9,9 @@ class YamlDataSpec extends FlatSpec with Logging {
     val files = YamlData.getFilesForClass(this.getClass, "test/yaml")
 
     assert(files.length == 2)
+
+    files.foreach(f => logger.info(s"File $f"))
+
     assert(files(0).endsWith("a.yaml"))
     assert(files(1).endsWith("b.yaml"))
   }
