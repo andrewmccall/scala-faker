@@ -1,21 +1,23 @@
 sudo: false
 language: scala
 scala:
-  - 2.11.12
-  - 2.12.8
+- 2.11.12
+- 2.12.8
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION coverage test
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
-  - sbt ++$TRAVIS_SCALA_VERSION coverageReport
-  - sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+- sbt ++$TRAVIS_SCALA_VERSION coverage test
+- sbt ++$TRAVIS_SCALA_VERSION clean coverage test
+- sbt ++$TRAVIS_SCALA_VERSION coverageReport
+- sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 after_success:
-  - sbt codacyCoverage
-  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then sbt ++$TRAVIS_SCALA_VERSION releaseEarly;
-    fi
+- sbt codacyCoverage
+- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then sbt ++$TRAVIS_SCALA_VERSION releaseEarly;
+  fi
 before_install:
-  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_0ab0f5a4b4c9_key
-    -iv $encrypted_0ab0f5a4b4c9_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar
-    -d; tar xv -C travis -f travis/local.secrets.tar; fi
+- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_0ab0f5a4b4c9_key
+  -iv $encrypted_0ab0f5a4b4c9_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar
+  -d; tar xv -C travis -f travis/local.secrets.tar; fi
 env:
   global:
   - secure: MdrMu5Mdjn3dEZSWNu9pMBGnPK/upCBmOcyb3JfTaHCsLDWe8F0QDH8v1XMQtzAFFFyarhuOMSxGUxFHURXl++ClkHMDHcGfat1sDersIy1yXzyr5AZZntSVpgAdj7XDB/K5Y5Ly+c/BWCIgZrEY3q0OH3zHTO9jT9kbge9ixqbDlghdfV+9Lg7VWH8DAxYxNGflC7HU8ZVjlTzjO3UTxAZQVh7iJ3f6QxngGktA7Z1JboMTXihnpSfhdtq1XWCVKU2ArVy24i3QPOlyKrgYfoevCMNEgrddXfRDpql4kShTHgSuRbx5DHcODbphN8SAwWCsSynYSnFV3BDgkG8mNNXy2u++czEl6v3Uj0zyQCPydyyiL8vrg7hnKKEgNjoUfTW9x/aauaq/sgRe3Y4ccoDDRNaFUlw4ctylFmT8M4GBl/vSxIwlBSR193QOBPL8Bv3w7tC7SV2+MNV9GrAWPkkBzczeU6ZNO56AcAyaxASQOC3D0ztbvXa3gR3XDz2n4PBQIiAdxJ38BLvPNZlCX/QQfl2YYsiSXXv1L5wPPpSWyJKSLHwAO+Z5hKGcyZfQjYEtoZnV87SeCjbjy4KLAPKtq9yEULo8dh8DPaI7AEAcf+mPoZJp14OYfmH5iX35dJElPuxMuBI3A/DZhjLHq6A2jrWlfpaMa+AUX2B2QCk=
+  - secure: Kr8u+w6BlNTQJ94OBqVTQHOSWnOyZ4srSRK4sZUABWvV0DAEPdqti2mcZCmDSq1tb/4oApx7wf7XPEiJU3Bp10C+CBPw6G3q5HXeiWJtTsinqwGs5Wz3oWRwGP5OPHJWWeHi4PNvMEoO6+gnf3vNUfZqi/l5bwtj30UUPu9r7MSmPAozPsEjKn/A/j472v2id+ampvdUNcoX8HAy6rIOI1GZtR4h0KVvm7rSK6nfNLNzYPiZy9qWkTEF0ZioP3+7j018Eb48ufqURlqhRqVAB1lQVgL5NYPG/LjkYuEouYqA3FOZUPD5ZGVWmiWGus8LdUMbWOzkz9wuhn094Em0wty+bey9r5ayrMz2LLAJ427RTFmmShxWIz74WI84xx2fQRY+uQ123drlKry1qE37EOuapqi2MncSdW8xaL5rYJYxZDWhIHp860mhi/9b2jO3D+kzipatDVE0ALiygRMKvEV7pXPSM3+lBWKBszhO1m2Cx7St8mm0BMtkAchxeIwhqUxA7TsHeE+fqmEZQIdAp1ZmnCboqCwbxmWVXjYCHSnS003QkwBELIXTuBY51IDUOvN+xb3/csDOymvA5GqQof1yPob7eXqBT4QeG+v3g/yN14/Wp5S38+kGYx6Mo2yIHSeU0nXQxmESNoX/u5WUMvWZsRk8GgQeSIvKZC8F8js=
+  - secure: omrUb0Sid2hzxktJdEgwCI0RIk0TTL4kNUw25/jWBSgdHJQc00Grvwkm5lJE5t0z+KiPcTS7Dgbqiybmn2kmyCKGAbDT2IU/BmiMoxCjdhLSNYP4p+NYT+bD+NGtuhhtfY5k6i8A3PUNhhlEpNGqDczc5AEpszZ+idHR6zegf92Z2km8J/Tzq26eoE2aqi+a407goN9yKovr4U5FqZ9SMec6+l9Nx/iPkku65NxqgsnRw1EdX7jG83XyrCjOONo8l9bqYGoIUjstcrqSCRSEAxCrdsxbkVopIvGn1PRkGGETkntmFFpZWmd0JDPM/nJCKnxOE8Bxnd7N2vYxMRZ5qIE6ZGthBLR03QIaOtNVW6cKU1rthOdvpvuaX7g41JFhHXPjfJXmEtQL0bVoO2vebWb6dHG07XCLVBXh+Mt76o8n1FweNkqnQg+a8pjKBeiGS37y4J2G0zl6ahLdsXsQQaguxbDVgbwN29YW+PRvuqMoTIUtJvINIrR9J3gngP+vrDK78tB5pwQMRhF7SL/1fa+NIM0g1wZcGneDQJV68jPFG5KsL84nZGSk9/Q4U80Y2twJYIB+jN9izaoLj5+2FwpbcWPHmZbbJ12Qjr1FzjY+WUb1K59qwqHpRSYswuPnxFR+REdaJzJ7FkbX6ZwyZatoWBLm54U3cJ8KakqhhTE=
