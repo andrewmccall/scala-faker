@@ -1,5 +1,5 @@
 # Scala Faker
-An implementation fo the Ruby faker library in scala. The intial implementation is a direct port of the ruby code to 
+An implementation fo the [Ruby faker library](https://github.com/stympy/faker) in scala. The intial implementation is a direct port of the ruby code to 
 scala, updates have tried to make it more scala like. 
 
 This code uses the YAML files from the ruby faker project and implements all the methods supported there.
