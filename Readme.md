@@ -21,7 +21,12 @@ Configuration follows the existing faker standard.
 ## Configuration
 
 ### Locales
+A faker can be configured for a different locale, allowing different languages and formats of keys to be returned. eg. UK Addresses.
+
     val config = new Config(locale="en-GB")
+    val faker = new Faker(config)
+    
+Keys that are not found in the selected locale are automatically looked up in the `en` locale.
 
 ### Random implementation
 The default random implementation uses a ThreadlocalRandom.current() to generate random numbers. This can be overriden 
@@ -29,41 +34,5 @@ if for example you need to provide a seed for reproducibility by setting another
 config.
 
     val myRandom = new Random(1)
-    val faker = new Faker(random=myRandom) 
-
-### Custom data sources
-By default 
-
-    val config = new Config(locale="en-GB")
-    Faker.setLocale()
-    Faker.setRandom()
-    Faker.setData()
-    
-## Modules
-Modules define the namespaces for the differetn fakers and are a combination of YAML 
-configuration files and functions. 
-    
-## Adding YAML files. 
-
-    faker.load(yaml)
-
-    en:
-        faker:
-            <module>:
-                key: value
-    
-
-## Custom functions
-
-Custom functions should be annotated with the @faker annotation and provide a module. Classes are registered any any 
-functions annotated with @faker will be automatically registered.
-
-    class MyModule {
-    
-        @faker("module-name")
-        def something() : String = {
-            "#{name.name}"
-        }
-    }
-
-    faker.register(class) 
+    val config = new Config(random=myRandom)
+    val faker = new Faker(config) 
