@@ -50,7 +50,12 @@ class Faker(config: Config = new Config()) extends Logging {
     templateRegex.r.replaceAllIn(value, m => {
 
       val key = m.group(1).toLowerCase
-      val cls = if (m.group(2) != null) m.group(2).dropRight(1) else parentKey
+      val cls = if (m.group(2) != null) {
+        m.group(2).dropRight(1)
+      } else {
+        parentKey
+      }.toLowerCase
+
       val meth = m.group(3)
       val parsedLocale = if (m.group(4) != null) m.group(4) else locale
 
@@ -67,6 +72,14 @@ class Faker(config: Config = new Config()) extends Logging {
         ""
       }
     })
+  }
+
+  private[faker] def isNamespace(s: String) : Boolean = {
+    s.contains('.')
+  }
+
+  private[faker] def getNamespace(str: String): String = {
+    str.toLowerCase().split("\\.").dropRight(1).mkString(".")
   }
 
   /**

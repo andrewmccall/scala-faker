@@ -24,7 +24,7 @@ inThisBuild(List(
   scmInfo := Some(ScmInfo(url("https://github.com/andrewmccall/scala-faker"), "scm:git:git@github.com:andrewmccall/scala-faker.git")),
 
   // These are the sbt-release-early settings to configure
-  pgpPublicRing := file("/keys/.gnupg/pubring.asc"),
-  pgpSecretRing := file("/keys/.gnupg/secring.asc"),
+  pgpPublicRing := file("./travis/local.pubring.asc"),
+  pgpSecretRing := file("./travis/local.secring.asc"),
   releaseEarlyWith := BintrayPublisher
 ))

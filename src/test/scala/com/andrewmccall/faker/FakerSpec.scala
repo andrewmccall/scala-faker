@@ -213,4 +213,42 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
     faker.regexify("\\w\\w\\d\\d-[ABC]") should fullyMatch regex "\\w\\w\\d\\d-[ABC]"
   }
 
+   "A key which contains subkeys" should "return those subkeys" in {
+
+     val string = s"Hello #{Name.name}!"
+
+     val mockData = mock[Data]
+
+     val faker = new Faker(new Config(data = mockData))
+     mockData.contains("en.faker.name.name", any, any) shouldReturn true
+     mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("#{name.first_name} #{name.last_name}"))
+     mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
+     mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+     mockData.contains("en.faker.name.last_name", any, any) shouldReturn true
+     mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(StringEntry("Smith"))
+
+
+     assert("Hello John Smith!" == faker(string))
+
+   }
+
+  "A key which contains subkeys" should "find those in the same namespace" in {
+
+    val string = s"Hello #{Name.name}!"
+
+    val mockData = mock[Data]
+
+    val faker = new Faker(new Config(data = mockData))
+    mockData.contains("en.faker.name.name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("#{first_name} #{last_name}"))
+    mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+    mockData.contains("en.faker.name.last_name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(StringEntry("Smith"))
+
+
+    assert("Hello John Smith!" == faker(string))
+
+  }
+
 }
