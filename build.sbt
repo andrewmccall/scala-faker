@@ -1,6 +1,6 @@
 name := "scala-faker"
 organization := "com.andrewmccall.faker"
-version := "0.2"
+version := "0.3-SNAPSHOT"
 crossScalaVersions := Seq("2.11.12", "2.12.8")
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.6" % Test
@@ -21,7 +21,7 @@ inThisBuild(List(
   homepage := Some(url("https://github.com/andrewmccall/scala-faker")),
   developers := List(Developer("andrewmccall", "Andrew McCall", "andrew@andrewmccall.com", url("http://andrewmccall.com"))),
   scmInfo := Some(ScmInfo(url("https://github.com/andrewmccall/scala-faker"), "scm:git:git@github.com:andrewmccall/scala-faker.git")),
-  
+
   pgpPublicRing := file("./travis/local.pubring.asc"),
   pgpSecretRing := file("./travis/local.secring.asc"),
   releaseEarlyWith := BintrayPublisher
