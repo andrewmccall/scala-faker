@@ -51,10 +51,10 @@ class Faker(config: Config = new Config()) extends Logging {
 
       val key = m.group(1).toLowerCase
       val cls = if (m.group(2) != null) {
-        m.group(2).dropRight(1)
-      } else {
-        parentKey
-      }.toLowerCase
+        m.group(2).dropRight(1).toLowerCase
+      } else if (parentKey != null) {
+        parentKey.toLowerCase
+      } else null
 
       val meth = m.group(3)
       val parsedLocale = if (m.group(4) != null) m.group(4) else locale
