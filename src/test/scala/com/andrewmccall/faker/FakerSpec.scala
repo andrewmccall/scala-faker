@@ -251,4 +251,25 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
   }
 
+
+  "A key which contains subkeys" should "find those in the same namespace when provided directly" in {
+
+    val string = s"name.name"
+
+    val mockData = mock[Data]
+
+    val faker = new Faker(new Config(data = mockData))
+    mockData.contains("en.faker.name.name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("#{first_name} #{last_name}"))
+    mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+    mockData.contains("en.faker.name.last_name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(StringEntry("Smith"))
+
+
+    assert("John Smith" == faker(string))
+
+  }
+
+
 }

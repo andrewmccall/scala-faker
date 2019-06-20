@@ -25,7 +25,7 @@ class Faker(config: Config = new Config()) extends Logging {
 
     val templateRegex = "#\\{(([A-Za-z]+\\.)?([^\\}]+))(:.*)?\\}?"
     val templateMatch = (".*" + templateRegex + ".*").r
-    val keyRegex = "([A-Za-z]+\\.?)+".r
+    val keyRegex = "^([A-Za-z]+\\.([A-Za-z]+\\.?)+)$".r
 
     logger.info(s"Parsing $string with parent $parentKey")
     // Start by trying to fetch the shorthand for a single key
@@ -37,8 +37,10 @@ class Faker(config: Config = new Config()) extends Logging {
       }
       case keyRegex(_*) => {
         val key = getKey(string, parentKey, locale)
-        if (this.modules.contains(key)) fetch(key, modules)
-        else if (this.config.data.contains(key)) fetch(key, config.data)
+        if (this.modules.contains(key)) {
+          parse(fetch(key, modules), if(isNamespace(key)) getNamespace(key) else parentKey)
+        }
+        else if (this.config.data.contains(key)) parse(fetch(key, config.data), if(isNamespace(key)) getNamespace(key) else parentKey)
         else string
       }
       case _ => {
@@ -132,6 +134,8 @@ class Faker(config: Config = new Config()) extends Logging {
   private[faker] def getKey(key: String, parentKey: String = null, locale: String = this.config.locale): String = {
     val parts = key.toLowerCase().split("\\.")
 
+    val parsedParent = if (parentKey != null && parentKey.startsWith("en.faker.")) parentKey.substring(9) else parentKey
+
     // if the key is long enough and looks well constructed, we'll just return it.
     if (parts.length >= 3 && parts(1).equals("faker")) {
       if (parts(0) == "en" || config.data.contains(key)) key
@@ -140,12 +144,12 @@ class Faker(config: Config = new Config()) extends Logging {
       // check if we can get based just on what we have with additional en.faker
       val localekey = (Seq(locale, "faker") ++ parts).mkString(".")
       if (config.data.contains(localekey)) localekey
-      else if (parentKey != null && parentKey.nonEmpty){
+      else if (parsedParent != null && parsedParent.nonEmpty){
 
-        val localekey = (Seq(locale, "faker", parentKey) ++ parts).mkString(".")
+        val localekey = (Seq(locale, "faker", parsedParent) ++ parts).mkString(".")
         if (config.data.contains(localekey)) localekey
         else
-          (Seq("en", "faker", parentKey) ++ parts).mkString(".")
+          (Seq("en", "faker", parsedParent) ++ parts).mkString(".")
       }
       else (Seq("en", "faker") ++ parts).mkString(".")
 
