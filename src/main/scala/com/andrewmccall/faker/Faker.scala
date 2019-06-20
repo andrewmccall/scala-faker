@@ -25,7 +25,7 @@ class Faker(config: Config = new Config()) extends Logging {
 
     val templateRegex = "#\\{(([A-Za-z]+\\.)?([^\\}]+))(:.*)?\\}?"
     val templateMatch = (".*" + templateRegex + ".*").r
-    val keyRegex = "^([A-Za-z]+\\.([A-Za-z]+\\.?)+)$".r
+    val keyRegex = "^([A-Za-z_]+\\.([A-Za-z_]+\\.?)+)$".r
 
     logger.info(s"Parsing $string with parent $parentKey")
     // Start by trying to fetch the shorthand for a single key

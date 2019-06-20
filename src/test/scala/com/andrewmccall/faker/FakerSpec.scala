@@ -271,5 +271,15 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
   }
 
+  "A key with underscores" should "be found and used" in {
+    val mockData = mock[Data]
+    val faker = new Faker(new Config(data = mockData))
+    mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
+    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+
+    assert("John" == faker("name.first_name"))
+
+
+  }
 
 }
