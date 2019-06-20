@@ -90,7 +90,7 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
     mockData.contains("en.faker.name.other", any, any) shouldReturn false
     mockData.contains("en-GB.faker.name.name.other", any, any) shouldReturn false
     key = "name.other"
-    assert(faker.getKey(key, parentKey = "name", locale = "en-GB") == "en.faker.name.name.other")
+    assert(faker.getKey(key, parentKey = "name", locale = "en-GB") == "en.faker.name.other")
 
   }
 

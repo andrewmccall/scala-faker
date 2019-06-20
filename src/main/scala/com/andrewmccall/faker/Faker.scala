@@ -148,8 +148,11 @@ class Faker(config: Config = new Config()) extends Logging {
 
         val localekey = (Seq(locale, "faker", parsedParent) ++ parts).mkString(".")
         if (config.data.contains(localekey)) localekey
-        else
-          (Seq("en", "faker", parsedParent) ++ parts).mkString(".")
+        else {
+          val localekey2 = (Seq("en", "faker", parsedParent) ++ parts).mkString(".")
+          if (config.data.contains(localekey2)) localekey2
+          else (Seq("en", "faker") ++ parts).mkString(".")
+        }
       }
       else (Seq("en", "faker") ++ parts).mkString(".")
 

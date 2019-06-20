@@ -33,7 +33,8 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
       val value: Any = data(key.head)
       val subMap: Map[String, Any] = value match {
         case j: java.util.Map[String, _] => j.asScala.toMap
-        case _ => value.asInstanceOf[Map[String, Any]]
+        case m: Map[String, Any] => m
+        case _ => return false
       }
       containKeys(key.drop(1), subMap)
     }
