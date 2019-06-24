@@ -9,7 +9,7 @@ This code uses the YAML files from the ruby faker project and implements all the
 
 ## Usage
 
-Configuration follows the existing faker standard. 
+Using the faker is as simple as creating a new faker and passing in keys. 
 
     val faker = new Faker()
     val someString = faker("name.name")
