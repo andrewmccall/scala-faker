@@ -5,7 +5,7 @@
 An implementation fo the [Ruby faker library](https://github.com/stympy/faker) in scala. The intial implementation is a direct port of the ruby code to 
 scala, updates have tried to make it more scala like. 
 
-This code uses the YAML files from the ruby faker project and implements all the methods supported there.
+This code uses modified YAML files from the ruby faker project and implements all the methods supported there.
 
 ## Usage
 
@@ -38,3 +38,8 @@ config.
     val myRandom = new Random(1)
     val config = new Config(random=myRandom)
     val faker = new Faker(config) 
+    
+    
+## Adding additional keys
+
+_This section is a work in progress_
