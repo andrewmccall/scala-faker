@@ -107,7 +107,7 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data = mockData))
     mockData.contains("en.faker.name.name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("World"))
+    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(SimpleEntry("World"))
 
     assert("World" == faker(string))
 
@@ -120,12 +120,12 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data = mockData))
     mockData.contains("en.faker.name.name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("World"))
+    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(SimpleEntry("World"))
 
     assert("Hello World!" == faker(string))
 
     mockData.contains("en.faker.world", any, any) shouldReturn true
-    mockData.fetch("en.faker.world", any, any) shouldReturn Some(StringEntry("World"))
+    mockData.fetch("en.faker.world", any, any) shouldReturn Some(SimpleEntry("World"))
     assert("Hello World!!" == faker("Hello #{world}!!"))
   }
 
@@ -221,11 +221,11 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
      val faker = new Faker(new Config(data = mockData))
      mockData.contains("en.faker.name.name", any, any) shouldReturn true
-     mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("#{name.first_name} #{name.last_name}"))
+     mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(SimpleEntry("#{name.first_name} #{name.last_name}"))
      mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
-     mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+     mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(SimpleEntry("John"))
      mockData.contains("en.faker.name.last_name", any, any) shouldReturn true
-     mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(StringEntry("Smith"))
+     mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(SimpleEntry("Smith"))
 
 
      assert("Hello John Smith!" == faker(string))
@@ -240,11 +240,11 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data = mockData))
     mockData.contains("en.faker.name.name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("#{first_name} #{last_name}"))
+    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(SimpleEntry("#{first_name} #{last_name}"))
     mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(SimpleEntry("John"))
     mockData.contains("en.faker.name.last_name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(StringEntry("Smith"))
+    mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(SimpleEntry("Smith"))
 
 
     assert("Hello John Smith!" == faker(string))
@@ -260,11 +260,11 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
     val faker = new Faker(new Config(data = mockData))
     mockData.contains("en.faker.name.name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(StringEntry("#{first_name} #{last_name}"))
+    mockData.fetch("en.faker.name.name", any, any) shouldReturn Some(SimpleEntry("#{first_name} #{last_name}"))
     mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(SimpleEntry("John"))
     mockData.contains("en.faker.name.last_name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(StringEntry("Smith"))
+    mockData.fetch("en.faker.name.last_name", any, any) shouldReturn Some(SimpleEntry("Smith"))
 
 
     assert("John Smith" == faker(string))
@@ -275,7 +275,7 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
     val mockData = mock[Data]
     val faker = new Faker(new Config(data = mockData))
     mockData.contains("en.faker.name.first_name", any, any) shouldReturn true
-    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(StringEntry("John"))
+    mockData.fetch("en.faker.name.first_name", any, any) shouldReturn Some(SimpleEntry("John"))
 
     assert("John" == faker("name.first_name"))
 

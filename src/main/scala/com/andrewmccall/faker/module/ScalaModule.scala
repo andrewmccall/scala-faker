@@ -1,6 +1,6 @@
 package com.andrewmccall.faker.module
 
-import com.andrewmccall.faker.{Config, Data, Entry, Faker, Namespace, StringEntry}
+import com.andrewmccall.faker.{Config, Data, Entry, Faker, Namespace, SimpleEntry}
 import org.apache.logging.log4j.scala.Logging
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.util.{ClasspathHelper, ConfigurationBuilder}
@@ -118,7 +118,7 @@ object ScalaModule extends Logging {
 
     override def fetch(key: String, locale: Option[String] = None, defaultLocale: String = Faker.defaultLocale): Option[Entry] = {
       val parsedKey = parseKey(key)
-      Some(StringEntry(modules(parsedKey._1).apply(parsedKey._2, Map.empty).toString))
+      Some(SimpleEntry(modules(parsedKey._1).apply(parsedKey._2, Map.empty).toString))
     }
     override def contains(key: String, locale: Option[String] = None, defaultLocale: String = Faker.defaultLocale): Boolean = {
       val parsedKey = parseKey(key)

@@ -8,7 +8,7 @@ import scala.util.matching.Regex.Match
 
 import com.andrewmccall.faker.module.ScalaModule
 
-class Faker(config: Config = new Config()) extends Logging {
+class Faker(private[faker] val config: Config = new Config()) extends Logging {
 
   private val alpha = Seq.range('A', 'Z')
   private val lower = Seq.range('a', 'z')
@@ -175,7 +175,7 @@ class Faker(config: Config = new Config()) extends Logging {
 
     val fetched = data.fetch(key).get match {
       case SeqEntry(s) => sample(s)
-      case StringEntry(s) => s
+      case SimpleEntry(s) => s
     }
     if (isRegex(fetched))
       regexify(fetched)

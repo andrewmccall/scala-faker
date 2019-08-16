@@ -7,14 +7,27 @@ import com.andrewmccall.faker.yaml.YamlData
 
 class Config(val locale: String = Faker.defaultLocale, val random: Random = ThreadLocalRandom.current(), val data: Data = new YamlData()) {
 
-  var modules: Map[String, (_) => String] = _
+  //val rootNamespace: Namespace = _
 
-  def loadClasses(): Unit = {
-    import org.reflections.Reflections
-    val reflections = new Reflections("com.andrewmccall.faker.modules")
-    //val annotated = reflections.getTypesAnnotatedWith(classOf[com.andrewmccall.faker.modules.Module])
+  def withRandom(random: Random): Unit = {
 
   }
 
+  def withYaml(resource: String): Config = {
+    this
+  }
+
+  def withModule(): Config = {
+    this
+  }
+
+}
+
+object Config {
+
+  def withDefaultConfig() = {
+    new Config()
+      .withYaml("Some string")
+  }
 
 }

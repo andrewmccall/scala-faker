@@ -2,7 +2,7 @@ package com.andrewmccall.faker.yaml
 
 import java.io.{File, FileReader}
 
-import com.andrewmccall.faker.{Data, Entry, Faker, SeqEntry, StringEntry}
+import com.andrewmccall.faker.{Data, Entry, Faker, SeqEntry, SimpleEntry}
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.scala.Logging
 import org.yaml.snakeyaml.Yaml
@@ -46,7 +46,7 @@ class YamlData(data: Map[String, Any]) extends Data with Logging {
     if (key.length == 1)
       value match {
         case l: java.util.List[String] => SeqEntry(l.asScala)
-        case _ => StringEntry(value.asInstanceOf[String])
+        case _ => SimpleEntry(value.asInstanceOf[String])
       }
     else {
       val values = value match {
