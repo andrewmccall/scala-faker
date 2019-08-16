@@ -177,9 +177,9 @@ class Faker(private[faker] val config: Config = new Config()) extends Logging {
       case SeqEntry(s) => sample(s)
       case SimpleEntry(s) => s
     }
-    if (isRegex(fetched))
+    if (Faker.isRegex(fetched))
       regexify(fetched)
-    else if (isReplacement(fetched))
+    else if (Faker.isReplacement(fetched))
       bothify(fetched)
     else fetched
   }
@@ -201,31 +201,7 @@ class Faker(private[faker] val config: Config = new Config()) extends Logging {
     }
   }
 
-  /**
-    * Checks if the string has the anchors. if so, assume it's a regex.
-    *
-    * @param s the string to check
-    * @return true if the string appears to be a regex.
-    */
-  private[faker] def isRegex(s: String): Boolean = {
-    if ("/\\^.*\\$/".r.findAllIn(s).nonEmpty)
-      true
-    else
-      false
-  }
 
-  /**
-    * Checks if the string has the anchors. if so, assume it's a regex.
-    *
-    * @param s the string to check
-    * @return true if the string appears to be a regex.
-    */
-  private[faker] def isReplacement(s: String): Boolean = {
-    if ("/.*/".r.findAllIn(s).nonEmpty)
-      true
-    else
-      false
-  }
 
   /**
     * Returns a single random entry from a Seq.
@@ -298,5 +274,31 @@ class Faker(private[faker] val config: Config = new Config()) extends Logging {
 object Faker {
 
   val defaultLocale : String = "en"
+
+  /**
+   * Checks if the string has the anchors. if so, assume it's a regex.
+   *
+   * @param s the string to check
+   * @return true if the string appears to be a regex.
+   */
+  private[faker] def isRegex(s: String): Boolean = {
+    if ("/\\^.*\\$/".r.findAllIn(s).nonEmpty)
+      true
+    else
+      false
+  }
+
+  /**
+   * Checks if the string has the anchors. if so, assume it's a regex.
+   *
+   * @param s the string to check
+   * @return true if the string appears to be a regex.
+   */
+  private[faker] def isReplacement(s: String): Boolean = {
+    if ("/.*/".r.findAllIn(s).nonEmpty)
+      true
+    else
+      false
+  }
 
 }

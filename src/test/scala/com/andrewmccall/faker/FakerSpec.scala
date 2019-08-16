@@ -176,8 +176,8 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
   "A string that starts with / and ends with /" should "be treated a simple replacement" in {
     val faker = new Faker(new Config(random = new Random(18), data = data))
     val string = "/###-???/"
-    assert(!faker.isRegex(string))
-    assert(faker.isReplacement(string))
+    assert(!Faker.isRegex(string))
+    assert(Faker.isReplacement(string))
     assert(faker.bothify(string) == "648-UCR")
   }
 
@@ -188,14 +188,14 @@ class FakerSpec extends FlatSpec with Matchers with AppendedClues with Idiomatic
 
 
     val not = "[ABC]"
-    assert(!faker.isRegex(not), s"'$not' should not be identified as a regex")
+    assert(!Faker.isRegex(not), s"'$not' should not be identified as a regex")
     val yep = "/^" + not + "$/"
-    assert(faker.isRegex(yep), s"'$yep' should be identified as a regex.")
+    assert(Faker.isRegex(yep), s"'$yep' should be identified as a regex.")
     val example = "/^[A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}$/"
-    assert(faker.isRegex(example), "The example from the regexify method should be true.")
+    assert(Faker.isRegex(example), "The example from the regexify method should be true.")
 
     val missingSlashes = "^" + not + "$"
-    assert(!faker.isRegex(missingSlashes), "Missing the slashes isn't the correct anchor.")
+    assert(!Faker.isRegex(missingSlashes), "Missing the slashes isn't the correct anchor.")
   }
 
   "regexify" should "generate the correct regex string" in {

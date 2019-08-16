@@ -15,7 +15,7 @@ Using the faker is as simple as creating a new faker and passing in keys.
     val someString = faker("name.name")
 
 ### Keys in strings
-{} is the standard notation for embedding a key. 
+`#{namespace.key}` is the standard notation for embedding a key. 
 
     val string = "Hi! My name is #{Name.name}"
     val result = faker(string)

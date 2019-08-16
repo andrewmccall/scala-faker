@@ -7,7 +7,7 @@ class EntrySpec extends FlatSpec with Matchers{
     val string = "Some String"
 
     val entry = Entry.getEntry(string)
-    assert(entry.get(null) == string)
+    assert(entry.get.get(null).get == string)
   }
 
 }
