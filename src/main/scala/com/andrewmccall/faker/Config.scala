@@ -10,7 +10,7 @@ class Config(val locale: String = Faker.defaultLocale, val random: Random = Thre
   //val rootNamespace: Namespace = _
 
   def withRandom(random: Random): Unit = {
-
+    new Config(this.locale, random, this.data)
   }
 
   def withYaml(resource: String): Config = {
