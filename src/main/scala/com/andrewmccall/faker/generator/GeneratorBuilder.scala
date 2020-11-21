@@ -9,3 +9,7 @@ trait GeneratorBuilder {
   type Generator = (Faker, String) => String
   def generate(): Generator
 }
+
+object GeneratorBuilder {
+
+}

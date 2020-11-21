@@ -4,6 +4,10 @@ import org.apache.logging.log4j.scala.Logging
 
 import scala.collection.JavaConverters._
 
+
+/**
+  * An Entry is needs to either provide a Generator or another Entry. At a point it can provide the key or value.
+  */
 sealed trait Entry {
   def get(faker: Faker): String
 }

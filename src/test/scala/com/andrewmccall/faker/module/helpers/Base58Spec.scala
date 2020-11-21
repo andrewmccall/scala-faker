@@ -1,4 +1,4 @@
-package com.andrewmccall.faker.helpers
+package com.andrewmccall.faker.module.helpers
 
 import org.scalatest.{FlatSpec, Matchers}
 
