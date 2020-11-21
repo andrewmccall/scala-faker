@@ -1,7 +1,7 @@
 logLevel := Level.Debug
 name := "scala-faker"
 organization := "com.andrewmccall.faker"
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4")
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.6" % Test
 libraryDependencies += "org.mockito" %% "mockito-scala" % "1.4.1" % Test

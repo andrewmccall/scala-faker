@@ -2,7 +2,8 @@ sudo: false
 language: scala
 scala:
 - 2.11.12
-- 2.12.8
+- 2.12.12
+- 2.13.4
 script:
 - sbt ++$TRAVIS_SCALA_VERSION coverage test
 - sbt ++$TRAVIS_SCALA_VERSION clean coverage test

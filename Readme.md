@@ -20,6 +20,10 @@ Using the faker is as simple as creating a new faker and passing in keys.
     val string = "Hi! My name is #{Name.name}"
     val result = faker(string)
 
+### Locales in keys
+
+Locales...
+
 ### Configuration
 
 #### Locales

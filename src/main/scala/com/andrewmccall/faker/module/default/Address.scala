@@ -5,7 +5,7 @@ import com.andrewmccall.faker.{Config, Faker}
 
 class Address(faker: Faker, config: Config) {
 
-  @faker
+  @faker("address")
   def countryByCode(code: String = "US"): String = {
     faker("address.country_by_code." + code)
   }

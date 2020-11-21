@@ -1,21 +1,39 @@
 package com.andrewmccall.faker
 
+import java.util.Locale
+
+import com.andrewmccall.faker.Faker.defaultLocale
 import org.apache.logging.log4j.scala.Logging
 
 import scala.annotation.tailrec
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-
 import com.andrewmccall.faker.module.ScalaModule
 
 class Faker(private[faker] val config: Config = new Config()) extends Logging {
+
+
 
   private val alpha = Seq.range('A', 'Z')
   private val lower = Seq.range('a', 'z')
   private val letters = alpha ++ lower
   private val modules = ScalaModule.loadModules(this, this.config)
 
-  //private val root: Namespace = _
+  type Generator = (Faker, String) => String
+  val generators: Map[String, Map[String, Generator]]
+
+  private[faker] def register (key: String, generator: Generator, locale : String = config.locale): Unit = {
+    generators.+(key, generator)
+  }
+
+  private[faker] def lookup(key: String, locale: String): Generator = {
+    // if we have the locale, try and look up there.
+    if (generators.contains(locale) && generators(locale).contains(key)) generators(locale)(key)
+    // if the locale doesn't exist, or the key doesn't exist in teh locale return the defualt locale.
+    else if (generators(defaultLocale).contains(key)) generators(defaultLocale)(key)
+    // if the key doesn't exist at all return the string and spit out a warning.
+    else (Faker, Locale) => key
+  }
 
   def apply(string: String): String = {
     parse(string)
@@ -231,7 +249,7 @@ class Faker(private[faker] val config: Config = new Config()) extends Logging {
     *
     * and generate a string like this:
     *
-    * "U3V  3TP"
+    * "U3V 3TP"
     */
   private[faker] def regexify(reg: String): String = {
 
