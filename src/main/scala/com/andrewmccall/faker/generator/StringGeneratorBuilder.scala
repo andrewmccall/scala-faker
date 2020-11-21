@@ -9,6 +9,6 @@ import com.andrewmccall.faker.Faker
   * @param value
   */
 case class StringGeneratorBuilder(value:String) extends GeneratorBuilder {
-  val generator =  (faker: Faker, locale: String) => value
+  private val generator =  (faker: Faker, locale: String) => value
   override def generate(): Generator = generator
 }

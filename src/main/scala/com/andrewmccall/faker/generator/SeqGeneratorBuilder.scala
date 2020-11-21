@@ -8,7 +8,7 @@ package com.andrewmccall.faker.generator
   */
 case class SeqGeneratorBuilder(values: Seq[GeneratorBuilder]) extends GeneratorBuilder {
 
-  val generators = values.map(g => g.generate())
+  private val generators = values.map(g => g.generate())
   override def generate(): Generator = (faker, locale) => faker.sample(generators)(faker, locale)
 
 }
