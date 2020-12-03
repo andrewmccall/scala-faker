@@ -6,19 +6,13 @@ import com.andrewmccall.faker.Faker.defaultLocale
 import org.apache.logging.log4j.scala.Logging
 
 import scala.annotation.tailrec
-import scala.util.matching.Regex
-import scala.util.matching.Regex.Match
 
 import scala.collection.mutable
 
 class Faker(private[faker] val config: Config = new Config()) extends Logging {
 
-
-
-
-
   type Generator = (Faker, String) => String
-  val generators = new mutable.Map[String, Map[String, Generator]]()
+  val generators = new mutable.HashMap[String, mutable.Map[String, Generator]]()
 
   private[faker] def register (key: String, generator: Generator, locale : String = config.locale): Unit = {
 
