@@ -1,3 +1,3 @@
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
-addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "2.112")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.0")
+addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "3.0.3")
 addSbtPlugin("ch.epfl.scala" % "sbt-release-early" % "2.1.1")
