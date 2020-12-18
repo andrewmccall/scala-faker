@@ -1,19 +1,19 @@
 logLevel := Level.Debug
 name := "scala-faker"
 organization := "com.andrewmccall.faker"
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4")
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.6" % Test
-libraryDependencies += "org.mockito" %% "mockito-scala" % "1.4.1" % Test
-libraryDependencies += "org.mockito" %% "mockito-scala-scalatest" % "1.4.1" % Test
-libraryDependencies += "org.yaml" % "snakeyaml" % "1.24"
-libraryDependencies += "org.reflections" % "reflections" % "0.9.11"
-libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.8.2"
-libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.8.2"
-libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.3" % Test
+libraryDependencies += "org.mockito" %% "mockito-scala" % "1.16.3" % Test
+libraryDependencies += "org.mockito" %% "mockito-scala-scalatest" % "1.16.3" % Test
+libraryDependencies += "org.yaml" % "snakeyaml" % "1.27"
+libraryDependencies += "org.reflections" % "reflections" % "0.9.12"
+libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.14.0"
+libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.14.0"
+libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "12.0"
 
-libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.7.3"
-libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.5.4"
+libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.12.0"
+libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.12.0"
 
 
 inThisBuild(List(

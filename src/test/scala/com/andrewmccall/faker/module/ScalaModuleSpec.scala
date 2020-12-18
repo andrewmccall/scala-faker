@@ -1,8 +1,10 @@
 package com.andrewmccall.faker.module
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 
-class ScalaModuleSpec extends FlatSpec with Matchers {
+class ScalaModuleSpec extends AnyFlatSpec with should.Matchers {
 
   "snakify" should "properly snakify method names" in {
     ScalaModule.snakify("fooBar") shouldBe "foo_bar"

@@ -1,8 +1,10 @@
 package com.andrewmccall.faker.helpers
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 
-class Base58Spec extends FlatSpec with Matchers {
+class Base58Spec extends AnyFlatSpec with should.Matchers {
 
   val hex = "0077BFF20C60E522DFAA3350C39B030A5D004E839AF415766B"
   val base58 = "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"

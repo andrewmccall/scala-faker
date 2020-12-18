@@ -1,9 +1,11 @@
 package com.andrewmccall.faker.yaml
 
 import org.apache.logging.log4j.scala.Logging
-import org.scalatest.FlatSpec
+import org.scalatest._
+import flatspec._
+import matchers._
 
-class YamlDataSpec extends FlatSpec with Logging {
+class YamlDataSpec extends AnyFlatSpec with should.Matchers with Logging {
 
   "some files" should "get loaded" in {
     val files = YamlData.getFilesForClass(this.getClass, "test/yaml")

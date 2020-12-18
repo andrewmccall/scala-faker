@@ -3,9 +3,11 @@ package com.andrewmccall.faker
 import java.util.Random
 
 import org.mockito.{ArgumentMatchersSugar, IdiomaticMockito}
-import org.scalatest.{AppendedClues, FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 
-class FakerSpec extends FlatSpec with Matchers with AppendedClues with IdiomaticMockito with ArgumentMatchersSugar {
+class FakerSpec extends AnyFlatSpec with should.Matchers with AppendedClues with IdiomaticMockito with ArgumentMatchersSugar {
 
   private class EmptyData extends Data {
     override def fetch(key: String, locale: Option[String], defaultLocale: String): Option[Entry] = ???

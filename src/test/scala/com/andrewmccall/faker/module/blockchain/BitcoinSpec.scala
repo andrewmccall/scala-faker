@@ -1,9 +1,11 @@
 package com.andrewmccall.faker.module.blockchain
 
 import com.andrewmccall.faker.{Config, Faker}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest._
+import flatspec._
+import matchers._
 
-class BitcoinSpec extends FlatSpec with Matchers {
+class BitcoinSpec extends AnyFlatSpec with should.Matchers {
 
   val config = new Config
   val faker = new Faker(config)
